@@ -1,0 +1,23 @@
+body {
+    background: #1c1c1c;
+  }
+  
+  h2,
+  p,
+  label {
+    color: #ffffff;
+  }
+  
+  .App {
+    font-family: sans-serif;
+  }
+  
+  li {
+    display: flex;
+    margin: 4rem 1rem;
+  }
+  
+  .userInfo {
+    margin: 0 1rem;
+  }
+  
