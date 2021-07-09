@@ -1,0 +1,103 @@
+body {
+  background: #2b2b2b;
+}
+
+h2,
+p,
+label {
+  color: #cecece;
+}
+
+button {
+  padding: 7px 24px;
+  border-radius: 4px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.App {
+  font-family: sans-serif;
+
+  .appHeader {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+
+    .inputFilter {
+      margin: 40px 10px 10px 10px;
+      padding: 8px 15px;
+      font-size: 15px;
+      max-width: 400px;
+      width: 250px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+    }
+  }
+
+  .getUsersDataBtn {
+    background: #0d65bd;
+    border: 1px solid #0d65bd;
+  }
+
+  .usersList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin: 1.2rem 2.5rem;
+    padding: 10px;
+
+    
+    div[data-tilt="true"] {
+      width: auto !important;
+      background: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    .userListItem {
+      display: flex;
+      margin: 1rem;
+      box-shadow: 10px 20px 50px #00000029;
+      padding: 20px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.5);
+      border-left: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(10px);
+      z-index: 1;
+
+      .userInfo {
+        margin: 0 1rem;
+      }
+      
+      .deleteUserBtn {
+        background: #bd0d0d;
+        border: 1px solid #bd0d0d;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px){
+  .App {
+    .usersList {
+      display: grid;
+      gap: 50px;
+      margin: 1.2rem;
+      padding: 10px;
+      grid-template-columns: 1fr !important;
+    }
+  
+    .userListItem {
+      display: block !important;
+    }
+  }
+
+  
+}
+
+
+
+  

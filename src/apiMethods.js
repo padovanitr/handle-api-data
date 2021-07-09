@@ -4,7 +4,7 @@ const baseUrl = "https://reqres.in/";
 
 export const getUsers = async () => {
   try {
-    let url = baseUrl + "api/users?page=2";
+    let url = baseUrl + "api/users?page=1";
     const data = await fetch(url);
     const users = await data.json();
     return users;

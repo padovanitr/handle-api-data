@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getUsers, deleteUser } from "./apiMethods";
+import Tilt from 'react-vanilla-tilt';
 
-import "./styles.css";
+import "./styles.scss";
 
 function App() {
   const [users, setUsers] = useState(null);
@@ -46,36 +47,51 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Users from API:</h2>
+    
       <div>
-        <button type="buton" onClick={handleGetUsers}>
-          Click
-        </button>
+        <div className="appHeader">
+          <h2>Users from API:</h2>
+          <button 
+            type="buton" 
+            onClick={handleGetUsers}
+            className="getUsersDataBtn"
+          >
+            Get Users
+          </button>
 
-        <div>
-          <input 
-            type="text"
-            onChange={(e) => setFilteredName(e.target.value)} 
-          />
+          <div>
+            <input 
+              type="text"
+              className="inputFilter"
+              placeholder="Filter by name"
+              onChange={(e) => setFilteredName(e.target.value)} 
+            />
+          </div>
         </div>
 
         {users && (
-          <ul>
+          <div className="usersList">
             {users.map((user, index) => (
-              <li key={index} id={user.id}>
-                <img src={user.avatar} alt={user.first_name} />
-                <div className="userInfo">
-                  <p>
-                    {user.first_name} {user.last_name}
-                  </p>
-                  <p>{user.email}</p>
-                  <button onClick={() => handleRemoveUser(user.id)}>
-                    delete
-                  </button>
+              <Tilt>
+                <div className="userListItem" key={index} id={user.id}>
+                  <img src={user.avatar} alt={user.first_name} />
+                  <div className="userInfo">
+                    <p>
+                      <strong>{user.first_name} {user.last_name}</strong>
+                    </p>
+                    <p>{user.email}</p>
+                    <button 
+                      type="button"
+                      className="deleteUserBtn"
+                      onClick={() => handleRemoveUser(user.id)}
+                    >
+                      delete
+                    </button>
+                  </div>
                 </div>
-              </li>
+              </Tilt>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
