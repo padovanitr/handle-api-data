@@ -7,6 +7,7 @@ import "./styles.scss";
 function App() {
   const [users, setUsers] = useState(null);
   const [filteredName, setFilteredName] = useState("");
+  const [usersArrayUpdated, setUsersArrayUpdated] = useState(null);
 
   const handleGetUsers = async () => {
     try {
@@ -21,17 +22,23 @@ function App() {
   const handleRemoveUser = async (userId) => {
     const newUsersList = await deleteUser(userId, users);
 
+    setUsersArrayUpdated(newUsersList)
     setUsers(newUsersList);
   };
+
+  const formatFilter = (str) => {
+    let string = str.toLowerCase();
+    return (string.charAt(0).toUpperCase() + string.slice(1)).replace(/ /g, '');
+  }
 
   useEffect(() => {
     async function getData() {
       if (filteredName !== "") {
-        let newUsers = await handleGetUsers();
+        let newUsers = usersArrayUpdated;
   
         if (newUsers) {
           const newUsersList = newUsers.filter((user) => {
-            return user.first_name === filteredName;
+            return user.first_name === formatFilter(filteredName);
           });
           if (newUsersList.length > 0) {
             setUsers(newUsersList);
@@ -43,7 +50,7 @@ function App() {
     }
 
     getData();
-  }, [filteredName]);
+  }, [filteredName, usersArrayUpdated]);
 
   return (
     <div className="App">
@@ -72,8 +79,8 @@ function App() {
         {users && (
           <div className="usersList">
             {users.map((user, index) => (
-              <Tilt>
-                <div className="userListItem" key={index} id={user.id}>
+              <Tilt key={index} id={user.id}>
+                <div className="userListItem">
                   <img src={user.avatar} alt={user.first_name} />
                   <div className="userInfo">
                     <p>
