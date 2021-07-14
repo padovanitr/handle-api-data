@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const baseUrl = "https://reqres.in/";
 
-export const getUsers = async () => {
+export const getUsers = async (pageNumber) => {
   try {
-    let url = baseUrl + "api/users?page=1";
+    let url = baseUrl + `api/users?page=${pageNumber}`;
     const data = await fetch(url);
     const users = await data.json();
     return users;

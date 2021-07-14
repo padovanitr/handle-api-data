@@ -3,27 +3,43 @@ import { getUsers, deleteUser } from "./apiMethods";
 import Tilt from 'react-vanilla-tilt';
 
 import "./styles.scss";
+import loading from '../src/assets/gifs/loading.gif';
 
 function App() {
-  const [users, setUsers] = useState(null);
+  const [pagesInfo, setPagesInfo] = useState(1)
+  const [users, setUsers] = useState([]);
   const [filteredName, setFilteredName] = useState("");
-  const [usersArrayUpdated, setUsersArrayUpdated] = useState(null);
+  const [currentUsers, setCurrentUsers] = useState([])
+  const [showLoading, setShowloading] = useState(false);
+  const [nextPageNumber, setNextPageNumber] = useState(1);
 
   const handleGetUsers = async () => {
     try {
-      const data = await getUsers();
-      setUsers(data.data);
-      return data.data;
+      const data = await getUsers(nextPageNumber);
+      setPagesInfo(data.total_pages)
+      if (nextPageNumber > data.total_pages) return;
+      const newUserInfos = [
+        ...users,
+        ...data.data,
+      ]
+      setUsers(newUserInfos);
+      setCurrentUsers(newUserInfos)
+      setNextPageNumber(data.page + 1)
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleRemoveUser = async (userId) => {
+    setShowloading(true)
     const newUsersList = await deleteUser(userId, users);
 
-    setUsersArrayUpdated(newUsersList)
+    if (newUsersList) {
+      setShowloading(false)
+    }
+
     setUsers(newUsersList);
+    setCurrentUsers(newUsersList)
   };
 
   const formatFilter = (str) => {
@@ -32,25 +48,29 @@ function App() {
   }
 
   useEffect(() => {
+    handleGetUsers();
+  }, [])
+
+  useEffect(() => {
+
     async function getData() {
+      console.log(filteredName)
       if (filteredName !== "") {
-        let newUsers = usersArrayUpdated;
-  
-        if (newUsers) {
-          const newUsersList = newUsers.filter((user) => {
-            return user.first_name === formatFilter(filteredName);
-          });
-          if (newUsersList.length > 0) {
-            setUsers(newUsersList);
-          } else {
-            setUsers(newUsers);
-          }
+        const newUsersList = users.filter((user) => {
+          return user.first_name === formatFilter(filteredName);
+        });
+        console.log(newUsersList)
+
+        if (newUsersList.length > 0) {
+          setUsers(newUsersList);
+        } else {
+          setUsers(currentUsers)
         }
       }
     }
 
     getData();
-  }, [filteredName, usersArrayUpdated]);
+  }, [filteredName]);
 
   return (
     <div className="App">
@@ -58,13 +78,6 @@ function App() {
       <div>
         <div className="appHeader">
           <h2>Users from API:</h2>
-          <button 
-            type="buton" 
-            onClick={handleGetUsers}
-            className="getUsersDataBtn"
-          >
-            Get Users
-          </button>
 
           <div>
             <input 
@@ -91,8 +104,12 @@ function App() {
                       type="button"
                       className="deleteUserBtn"
                       onClick={() => handleRemoveUser(user.id)}
-                    >
-                      delete
+                    > 
+                      {showLoading ?
+                        <img className="loadingGif" src={loading} alt="loading"/>
+                      :
+                        "delete"
+                      }
                     </button>
                   </div>
                 </div>
@@ -100,6 +117,13 @@ function App() {
             ))}
           </div>
         )}
+        {
+          nextPageNumber <= pagesInfo && (
+            <div className="loadMoreBtnContainer">
+              <button onClick={() => {handleGetUsers()}}>load more</button>
+            </div>
+          )
+        }
       </div>
     </div>
   );

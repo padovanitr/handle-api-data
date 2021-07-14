@@ -19,6 +19,22 @@ button {
 .App {
   font-family: sans-serif;
 
+  .loadMoreBtnContainer {
+    margin: 30px auto;
+    width: 116px; 
+
+    button {
+      background: #0d65bd;
+      border: 1px solid #0d65bd;
+    }
+  }
+
+  .loadingGif {
+    width: 20px;
+    height: 20px;
+    margin-top: -2px;
+  }
+
   .appHeader {
     width: 300px;
     margin: 0 auto;
@@ -75,6 +91,8 @@ button {
       .deleteUserBtn {
         background: #bd0d0d;
         border: 1px solid #bd0d0d;
+        height: 31px;
+        width: 89px;
       }
     }
   }
