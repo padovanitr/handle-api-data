@@ -10,7 +10,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [filteredName, setFilteredName] = useState("");
   const [currentUsers, setCurrentUsers] = useState([])
-  const [showLoading, setShowloading] = useState(false);
+  const [showLoading, setShowloading] = useState('');
   const [nextPageNumber, setNextPageNumber] = useState(1);
 
   const handleGetUsers = async () => {
@@ -31,11 +31,11 @@ function App() {
   };
 
   const handleRemoveUser = async (userId) => {
-    setShowloading(true)
+    setShowloading(userId)
     const newUsersList = await deleteUser(userId, users);
 
     if (newUsersList) {
-      setShowloading(false)
+      setShowloading('')
     }
 
     setUsers(newUsersList);
@@ -105,7 +105,7 @@ function App() {
                       className="deleteUserBtn"
                       onClick={() => handleRemoveUser(user.id)}
                     > 
-                      {showLoading ?
+                      {showLoading == user.id ?
                         <img className="loadingGif" src={loading} alt="loading"/>
                       :
                         "delete"
